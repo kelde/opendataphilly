@@ -84,224 +84,16 @@
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
 </head>
 <body>
-<div id="map">
+	<div id="map">
 
 
-</div>
+	</div>
 	<script type="text/javascript">
-	
-		var tileFiles = {
-			"0": {
-				"fileName": "energy-buildings-75.25_40.01_-75.2_39.98.json",
-				"loaded": "false"
-			},
-			"1": {
-				"fileName": "energy-buildings-75.2_40.01_-75.15_39.98.json",
-				"loaded": "false"
-			},
-			"2": {
-				"fileName": "energy-buildings-75.15_40.01_-75.1_39.98.json",
-				"loaded": "false"
-			},
-			"3": {
-				"fileName": "energy-buildings-75.1_40.01_-75.05_39.98.json",
-				"loaded": "false"
-			},
-			"4": {
-				"fileName": "energy-buildings-75.05_40.01_-75.0_39.98.json",
-				"loaded": "false"
-			},
-			"5": {
-				"fileName": "energy-buildings-75.25_39.98_-75.2_39.95.json",
-				"loaded": "false"
-			},
-			"6": {
-				"fileName": "energy-buildings-75.2_39.98_-75.15_39.95.json",
-				"loaded": "false"
-			},
-			"7": {
-				"fileName": "energy-buildings-75.15_39.98_-75.1_39.95.json",
-				"loaded": "false"
-			},
-			"8": {
-				"fileName": "energy-buildings-75.1_39.98_-75.05_39.95.json",
-				"loaded": "false"
-			},
-			"9": {
-				"fileName": "energy-buildings-75.05_39.98_-75.0_39.95.json",
-				"loaded": "false"
-			},
-			"10": {
-				"fileName": "energy-buildings-75.25_39.95_-75.2_39.92.json",
-				"loaded": "false"
-			},
-			"11": {
-				"fileName": "energy-buildings-75.2_39.95_-75.15_39.92.json",
-				"loaded": "false"
-			},
-			"12": {
-				"fileName": "energy-buildings-75.15_39.95_-75.1_39.92.json",
-				"loaded": "false"
-			},
-			"13": {
-				"fileName": "energy-buildings-75.1_39.95_-75.05_39.92.json",
-				"loaded": "false"
-			},
-			"14": {
-				"fileName": "energy-buildings-75.05_39.95_-75.0_39.92.json",
-				"loaded": "false"
-			},
-			"15": {
-				"fileName": "energy-buildings-75.25_39.92_-75.2_39.89.json",
-				"loaded": "false"
-			},
-			"16": {
-				"fileName": "energy-buildings-75.2_39.92_-75.15_39.89.json",
-				"loaded": "false"
-			},
-			"17": {
-				"fileName": "energy-buildings-75.15_39.92_-75.1_39.89.json",
-				"loaded": "false"
-			},
-			"18": {
-				"fileName": "energy-buildings-75.1_39.92_-75.05_39.89.json",
-				"loaded": "false"
-			},
-			"19": {
-				"fileName": "energy-buildings-75.05_39.92_-75.0_39.89.json",
-				"loaded": "false"
-			},
-			"20": {
-				"fileName": "energy-buildings-75.25_39.89_-75.2_39.86.json",
-				"loaded": "false"
-			},
-			"21": {
-				"fileName": "energy-buildings-75.2_39.89_-75.15_39.86.json",
-				"loaded": "false"
-			},
-			"22": {
-				"fileName": "energy-buildings-75.15_39.89_-75.1_39.86.json",
-				"loaded": "false"
-			},
-			"23": {
-				"fileName": "energy-buildings-75.1_39.89_-75.05_39.86.json",
-				"loaded": "false"
-			},
-			"24": {
-				"fileName": "energy-buildings-75.05_39.89_-75.0_39.86.json",
-				"loaded": "false"
-			},
-		}
-	
-		var tiles = [
-			[
-				[-75.25, 40.01],
-				[-75.2, 39.98]
-			],
-			[
-				[-75.2, 40.01],
-				[-75.15, 39.98]
-			],
-			[
-				[-75.15, 40.01],
-				[-75.1, 39.98]
-			],
-			[
-				[-75.1, 40.01],
-				[-75.05, 39.98]
-			],
-			[
-				[-75.05, 40.01],
-				[-75.0, 39.98]
-			],
-			[
-				[-75.25, 39.98],
-				[-75.2, 39.95]
-			],
-			[
-				[-75.2, 39.98],
-				[-75.15, 39.95]
-			],
-			[
-				[-75.15, 39.98],
-				[-75.1, 39.95]
-			],
-			[
-				[-75.1, 39.98],
-				[-75.05, 39.95]
-			],
-			[
-				[-75.05, 39.98],
-				[-75.0, 39.95]
-			],
-			[
-				[-75.25, 39.95],
-				[-75.2, 39.92]
-			],
-			[
-				[-75.2, 39.95],
-				[-75.15, 39.92]
-			],
-			[
-				[-75.15, 39.95],
-				[-75.1, 39.92]
-			],
-			[
-				[-75.1, 39.95],
-				[-75.05, 39.92]
-			],
-			[
-				[-75.05, 39.95],
-				[-75.0, 39.92]
-			],
-			[
-				[-75.25, 39.92],
-				[-75.2, 39.89]
-			],
-			[
-				[-75.2, 39.92],
-				[-75.15, 39.89]
-			],
-			[
-				[-75.15, 39.92],
-				[-75.1, 39.89]
-			],
-			[
-				[-75.1, 39.92],
-				[-75.05, 39.89]
-			],
-			[
-				[-75.05, 39.92],
-				[-75.0, 39.89]
-			],
-			[
-				[-75.25, 39.89],
-				[-75.2, 39.86]
-			],
-			[
-				[-75.2, 39.89],
-				[-75.15, 39.86]
-			],
-			[
-				[-75.15, 39.89],
-				[-75.1, 39.86]
-			],
-			[
-				[-75.1, 39.89],
-				[-75.05, 39.86]
-			],
-			[
-				[-75.05, 39.89],
-				[-75.0, 39.86]
-			] 
-		];
-	
+
 		var width = '100%',
 			height = '100%';
-			active = d3.select(null),
 			fillColor = d3.rgb(215, 215, 250),
 			strokeColor = d3.rgb(175, 175, 200);
 		
@@ -310,51 +102,13 @@
 						.translate([0,0]);
 								
 		var path = d3.geo.path()
-					.projection(projection);
-					
-		
-		/*	
-		var svg = d3.select("body").append("svg")
-					.attr("width", width)
-					.attr("height", height);
-			
-		svg.append("rect")
-			.attr("class", "background")
-			.attr("width", width)
-			.attr("height", height)
-			.attr("fill", "white")
-			.on("click", reset);
-					
-					
-		var g = svg.append("g")
-				.style("stroke-width", "1.5px");		
-				*/	
+					.projection(projection);	
 		
 		
 		d3.json("all_buildings_w_points_final.json", function(error, limits) {
 			if (error) return console.error(error);
 					
-			console.log(limits);
-			
-			/*
-			//Get the bounds of the geometry and scale / translate to fit screen			
-			b = path.bounds(limits);
-			s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
-			t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
-			projection.scale(s).translate(t);
-				
-			g.selectAll("path")
-				.data(limits.features)
-				.enter()
-				.append("path")
-				.attr("d", path)
-				.attr("class", "feature")
-				.on("click", clicked)
-				.style("fill", fillColor)
-				.style("stroke", strokeColor)
-				.on("mouseover", darkenPath)
-				.on("mouseout", restoreColors);
-			*/
+			//console.log(limits);
 
 			makeMap(limits);
 
@@ -366,11 +120,21 @@
   					.attr('class', 'd3-tip')
   					.offset([-10, 0])
   					.html(function(d) {
-    				return "<div class=\"tip-item\"><strong>Property Name: </strong> <span style='color:red'>" + d.properties.propertyName + "</span></strong></div><div class=\"tip-item\"><strong>Address: </strong><span style='color:red'>" + d.properties.address + "</span></strong></div><div class=\"tip-item\"><strong>Site EUI (kBtu / ft&#178): </strong> <span style='color:red'>" + d.properties.siteEUIkBtuPerFt + "</span></strong></div>";
+    				return "<div class=\"tip-item\"> \
+    							<strong>Property Name: </strong><span style='color:red'>" + d.properties.propertyName + "</span></strong> \
+    						</div> \
+    						<div class=\"tip-item\"> \
+    							<strong>Address: </strong><span style='color:red'>" + d.properties.address + "</span></strong> \
+    						</div> \
+    						<div class=\"tip-item\"> \
+    							<strong>Site EUI (kBtu / ft&#178): </strong><span style='color:red'>" + d.properties.siteEUIkBtuPerFt + "</span></strong> \
+    						</div>";
   				});
 				
 				// Quantize for color brewer
 				var pad = d3.format("05d");
+
+				// Domain is range for EUI values that are expected to be blue
 				var quantize = d3.scale.quantile().domain([0, 563]).range(d3.range(9));
 			
 	        	var allowedBounds = new google.maps.LatLngBounds(
@@ -383,14 +147,14 @@
 						zoom: 14,
 						minZoom : 13,
 						mapTypeId: google.maps.MapTypeId.ROADMAP,
-						center: new google.maps.LatLng(39.95484,-75.16465), //Philadelphia
+						center: new google.maps.LatLng(39.95484,-75.16465), // Philadelphia
 						styles:[{"stylers": [{"saturation": -75},{"lightness": 75}]}]					
 					});
 
 				var geoJson = borders;
 				var overlay = new google.maps.OverlayView();
 				
-				
+
 
 				overlay.onAdd = function () {
 
@@ -398,9 +162,9 @@
 					var svg = layer.append("svg")
 						.attr("width", $map.width())
 						.attr("height", $map.height())
-						.classed("Blues", true);
+						.classed("Blues", true); // Set parent element's class for color brewer Blues
 						
-					svg.call(tip);
+					svg.call(tip); // Set the tooltip
 					
 					var bounds = svg.append("g").attr("class", "bounds");
 
@@ -416,14 +180,14 @@
 						}
 						
 						
+						// Draw the polygons
 
 						path = d3.geo.path().projection(googleMapProjection);
 						bounds.selectAll("path")
-							.data(geoJson.features)
-							.attr("d", path) // update existing paths
+							.data(geoJson.features) // Load the feature collection
+							.attr("d", path) // Update existing paths
 						.enter().append("svg:path")
 							.attr("d", path)
-							//.attr("class", "feature")
 							.attr("class", function(d) {  
 								if (d.properties.siteEUIkBtuPerFt == "Not Available") {
 									return "not_available";
@@ -432,156 +196,51 @@
 								} else {
 									return "q" + quantize(d.properties.siteEUIkBtuPerFt) + "-9"; 
 								}
-							})
+							}) // If EUI is undefined the building will be gray, if EUI is greater than 2000 the building will be red, otherwise the building will be a shade of blue
 							.on("click", clicked)
-							//.style("fill", fillColor)
 							.style("stroke", strokeColor)
 							.on("mouseover", onMouseOver)
 							.on("mouseout", onMouseOut)
-							//.on("mouseout", tip.hide);
 					};
 					
 					function onMouseOver() {
 						
-						/*d3.select(this)
-							.transition()
-							.duration(200)
-							.style("fill", fillColor.darker())
-							.style("stroke", strokeColor.darker())*/
+						// Show tooltip on mouseover
 						tip.show(d3.event.toElement.__data__, d3.event.toElement);
-						console.log(d3.event);
+						//console.log(d3.event);
 				
 					}
 					
 					function onMouseOut() {
-						/*d3.select(this)
-						.transition()
-						.duration(200)
-						.style("fill", fillColor)
-						.style("stroke", strokeColor);*/
+
+						// Hide tooltip on mouseout
 						tip.hide(d3.event.toElement.__data__, d3.event.toElement);
 					}
 
-				};
+				};  // End of overlay.onAdd
 
 				var lastValidCenter = map.getCenter();
 	
 				google.maps.event.addListener(map, 'center_changed', function() {
 					if (allowedBounds.contains(map.getCenter())) {
-						// still within valid bounds, so save the last valid position
+						// Still within valid bounds, so save the last valid position
 						lastValidCenter = map.getCenter();
 						return; 
 					}
 
-					// not valid anymore => return to last valid position
+					// Not valid anymore => return to last valid position
 					map.panTo(lastValidCenter);
 				});
 				
 				overlay.setMap(map);
-
-				google.maps.event.addListener(map, 'bounds_changed', function() {  
-					// get the bounds of the current viewport
-					
-				//	boundsObj = map.getBounds();
-					
-				//	console.log(boundsObj);
-					
-				//	console.log(toString(boundsObj));
-					
-					//topLeft = [boundsObj["va"]["j"], boundsObj["Ea"]["j"]];
-					//botRight = [boundsObj["va"]["k"], boundsObj["Ea"]["k"]];
-					
-					//console.log("Top left: "+topLeft[0]+", "+topLeft[1]);
-					//console.log("Bottom right: "+botRight[0]+", "+botRight[1]);
-					
-					// check the tiles' corners and see if any of them are in the new bounds
-					
-				//	for (i = 0; i < tiles.length; i++) {
-						//console.log(i);
-						//console.log("Top left of tile: "+tiles[i][0][0]+", "+tiles[i][0][1]);
-						//console.log("Top right of tile: "+tiles[i][1][0]+", "+tiles[i][0][1]);
-						//console.log("Bottom right of tile: "+tiles[i][0][0]+", "+tiles[i][1][1]);
-						//console.log("Bottom right of tile: "+tiles[i][1][0]+", "+tiles[i][1][1]);
-				//		pointsToCheck = [
-				//			[tiles[i][0][1], tiles[i][0][0]],
-				//			[tiles[i][0][1], tiles[i][1][0]],
-				//			[tiles[i][1][1], tiles[i][0][0]],
-				//			[tiles[i][1][1], tiles[i][1][0]]
-				//		]
-				//		for (j = 0; j < pointsToCheck.length; j++) {
-							//console.log(pointsToCheck[j][0]);
-							//console.log(pointsToCheck[j][1]);
-				//			point = new google.maps.LatLng(pointsToCheck[j][0], pointsToCheck[j][1]);
-				//			//console.log(point);
-				//			if (boundsObj.contains(point) == true) {
-						
-								// if one of the current tiles corners are in the new bounds:
-					
-									// check to see if the tile has already been loaded
-									
-				//						console.log(tileFiles[i]["loaded"]);
-						
-									// if the tile has not already been loaded
-							
-										// load the tile and draw the polygons
-										
-										// check the tile off as loaded
-						
-								// if the tile has already been loaded
-							
-									// do not load the tile
-							
-				//				console.log("Contains point: "+pointsToCheck[j][0]+", "+pointsToCheck[j][1]);
-				//			}
-				//		}
-				//	}
-					
-					
-								
-						
-						
-				//	console.log(map.getBounds())  
-				
-				});
-				
-				
-					
-				console.log(map.getBounds());
-			}
+			} // End of makeMap
 			
 			
-			
-			
-			
+		
 			function clicked(d) {
 				console.log((this).__data__);
-				/*if (active.node() === this) return reset();
-				active.classed("active", false);
-				active = d3.select(this).classed("active", true);
 				
-				//Scale and translate based on the clicked path
-				
-				var bounds = path.bounds(d),
-				dx = bounds[1][0] - bounds[0][0],
-				dy = bounds[1][1] - bounds[0][1],
-				x = (bounds[0][0] + bounds[1][0]) / 2,
-				y = (bounds[0][1] + bounds[1][1]) / 2,
-				scale = .9 / Math.max(dx / width, dy / height),
-				translate = [width / 2 - scale * x, height / 2 - scale * y];
-		
-				g.transition()
-					.duration(750)
-					.style("stroke-width", 1.5 / scale + "px")
-					.attr("transform", "translate(" + translate + ")scale(" + scale + ")");*/
-			}
-			
-			function reset() {
-				active.classed("active", false);
-				active = d3.select(null);
-				g.transition()
-					.duration(750)
-					.style("stroke-width", "1.5px")
-					.attr("transform", "");
+				// Add this building to the object that will be used to build the scatter plot
 			}
 	</script>
 </body>
