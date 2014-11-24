@@ -18,31 +18,19 @@
     		height = 500 - margin.top - margin.bottom;
 
     	var xValue = function(d) { 
-    					//console.log(d["properties"]["floorAreaFtSq"]); 
-    					if (d["properties"]["floorAreaFtSq"] != "Not Available") {
-    						return Math.round(d["properties"]["floorAreaFtSq"]); 
-    					} else {
-    						return 0;
-    					}
+    					return Math.round(d["properties"]["floorAreaFtSq"]); 
     				},
     		xScale = d3.scale.linear().range([0, width]),
     		xMap = function(d) { 
-    					//console.log(xScale(xValue(d)));
     					return xScale(xValue(d)); 
     				},
     		xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
     	var yValue = function(d) { 
-    					//console.log(Math.round(d["properties"]["siteEUIkBtuPerFt"])); 
-    					if (d["properties"]["siteEUIkBtuPerFt"] != "Not Available") {
-    						return Math.round(d["properties"]["siteEUIkBtuPerFt"]); 
-    					} else {
-    						return 0;
-    					}
+    					return Math.round(d["properties"]["siteEUIkBtuPerFt"]);
     				},
     		yScale = d3.scale.linear().range([height, 0]),
     		yMap = function(d) { 
-    					/*console.log(d); */
     					return yScale(yValue(d)); 
     				},
     		yAxis = d3.svg.axis().scale(yScale).orient("left");
@@ -54,9 +42,11 @@
     				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     	d3.json("all_buildings_w_points_final.json", function(error, data) {
+
+                data = preprocessData(data["features"]);
     			console.log(d3.min(data, xValue) - 1);
     			console.log(d3.max(data, xValue) + 1);
-    			data = data["features"];
+    			
     			if (error) return console.error(error);
     			xScale.domain([d3.min(data, xValue) - 1, d3.max(data, xValue) + 1]);
     			yScale.domain([d3.min(data, yValue) - 1, d3.max(data, yValue) + 1]);
@@ -92,6 +82,19 @@
     				.attr("cy", yMap)
     				.style("fill", "blue")
    	});
+
+    function preprocessData(data) {
+        newdata = []
+        for (i = 0; i < data.length; i++) {
+           // console.log(data[i]);
+            if (!isNaN(data[i].properties['siteEUIkBtuPerFt']) && !isNaN(data[i].properties['floorAreaFtSq']) && !isNaN(data[i].properties['energyStarScore']) && !isNaN(data[i].properties['yearBuilt']) && !isNaN(data[i].properties['naturalGasUsekBtu'])) {
+                 newdata.push(data[i]);
+            }
+           
+        }
+        console.log(newdata);
+        return newdata;
+    }
 	</script>
 </body>
 </html>
