@@ -82,7 +82,9 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=false">
+</script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 </head>
 <body>
@@ -111,7 +113,6 @@
 			//console.log(limits);
 
 			makeMap(limits);
-
 		});
 
 	        function makeMap(borders) {
@@ -153,7 +154,47 @@
 
 				var geoJson = borders;
 				var overlay = new google.maps.OverlayView();
+
+				fetchPlaces(borders);
 				
+				function fetchPlaces(buildings) {
+				  buildings = buildings.features;
+				  var heatmapData = [];
+				  var maxWeight = 0;
+		          for (building in buildings) {
+		          	if (!isNaN(parseInt(buildings[building].properties.siteEUIkBtuPerFt)) && parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt)) < 5000) {
+		          		var thisWeight = parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt));
+		          		if (thisWeight > maxWeight) {
+		          			maxWeight = thisWeight;
+		          		}
+		          	}
+		          }
+		          for (building in buildings) {
+		          	var lng = buildings[building].properties.pointCoords[0];
+		          	var lat = buildings[building].properties.pointCoords[1];
+
+		            var latLng = new google.maps.LatLng(lat,lng);
+		            if (!isNaN(parseInt(buildings[building].properties.siteEUIkBtuPerFt)) && parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt)) < 5000) {
+		            	var weight = parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt));
+		            	var weightedLocation = {};
+		            	weightedLocation.location = latLng;
+		            	weightedLocation.weight = weight/(maxWeight);
+		            	heatmapData.push(weightedLocation);
+
+		            	if (weight < 1) {
+		            		console.log("Building: "+buildings[building].properties.propertyName);
+		            		console.log(parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt)));
+		            	}
+		            }
+		          }
+				  var heatmap = new google.maps.visualization.HeatmapLayer({
+			     	data:heatmapData,
+			     	dissipating:true,
+			     	radius:75
+				  });
+				  console.log("Max Weight is: "+maxWeight)
+				  heatmap.setMap(map);
+			    };//End of Fetch Places
 
 
 				overlay.onAdd = function () {
