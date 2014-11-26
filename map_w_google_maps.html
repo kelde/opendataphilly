@@ -11,6 +11,7 @@
 			width:100%;
 			height:100%;
 			margin:0;
+			overflow:hidden;
 		}
 
 		.axis path,
@@ -38,7 +39,6 @@
         #map {
             width: 100%;
             height: 100%;
-            float: left;
             margin:0;
         }
 
@@ -87,12 +87,12 @@
 		.d3-tip {
   			line-height: 1;
   			font-weight: bold;
-  			padding: 12px;
   			background: rgba(0, 0, 0, 0.8);
   			color: #fff;
   			border-radius: 2px;
 			font-family: Arial, Helvetica, sans-serif;
 			font-size: 12px;
+			padding: 12px;
 			z-index: 100;
 		}
 		
@@ -142,11 +142,14 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 </head>
 <body>
-	<button id="electricityUsekBtu" onclick="fetchPlaces(geoJson,'electricityUsekBtu',map)">Electricity Use</button>
-	<button id="siteEUIkBtuPerFt" onclick="fetchPlaces(geoJson,'siteEUIkBtuPerFt',map)">Site Energy Use Intensity</button>
-	<button id="naturalGasUsekBtu" onclick="fetchPlaces(geoJson,'naturalGasUsekBtu',map)">Natural Gas Use</button>
-	<button id="totalGHGEmissionsMtCO2e" onclick="fetchPlaces(geoJson,'totalGHGEmissionsMtCO2e',map)">Total Greenhouse Gas Emissions</button>
-	<a href="#" class="click">Triggers the sliding</a>
+	<div id="buttonWrapper" style="position:absolute;z-index:10;bottom:25px;left:10px;">
+		<button id="electricityUsekBtu" onclick="fetchPlaces(geoJson,'electricityUsekBtu',map)">Electricity Use</button>
+		<button id="siteEUIkBtuPerFt" onclick="fetchPlaces(geoJson,'siteEUIkBtuPerFt',map)">Site Energy Use Intensity</button>
+		<button id="naturalGasUsekBtu" onclick="fetchPlaces(geoJson,'naturalGasUsekBtu',map)">Natural Gas Use</button>
+		<button id="totalGHGEmissionsMtCO2e" onclick="fetchPlaces(geoJson,'totalGHGEmissionsMtCO2e',map)">Total Greenhouse Gas Emissions</button>
+		<h3 id="title">Current: Total Greenhouse Gas Emissions</h3>
+		<button href="#" class="click">Triggers the sliding</button>
+	</div>
 	<div id="container">
 		<div id="main">
 			<div id="map">
@@ -185,15 +188,19 @@
 		  buildings = buildings.features;
 		  var heatmapData = [];
 		  var maxWeight = 0;
+		  var secondHighestWeight = 0;
 
 		  for (building in buildings) {
           	if (!isNaN(parseInt(buildings[building].properties[property])) /*&& parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)) < 5000*/) {
           			var thisWeight = parseInt(Math.ceil(buildings[building].properties[property]));
           			if (thisWeight > maxWeight) {
+					    secondHighestWeight = maxWeight;
           				maxWeight = thisWeight;
           			}
           		}
           	};
+			
+		maxWeight = secondHighestWeight;
 
          for (building in buildings) {
           	var lng = buildings[building].properties.pointCoords[0];
@@ -217,6 +224,23 @@
 	     	radius:100
 		  });
 		  heatmap.setMap(map);
+		  
+		  var title = document.getElementById("title");
+		  switch (property) {
+			case "electricityUsekBtu":
+				title.innerHTML = "Current: Electricity Use";
+				break;
+			case "siteEUIkBtuPerFt":
+				title.innerHTML = "Current: Site Energy Use Intensity";
+				break;
+			case "naturalGasUsekBtu":
+				title.innerHTML = "Current: Natural Gas Use";
+				break;
+			case "totalGHGEmissionsMtCO2e":
+				title.innerHTML = "Current: Total Greenhouse Gas Emissions";
+				break;
+		  }
+		  
 		  drawScatter(property)
 	    };//End of Fetch Places
 
