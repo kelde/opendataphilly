@@ -12,10 +12,64 @@
 			height:100%;
 			margin:0;
 		}
+
+		.axis path,
+		.axis line {
+  			fill: none;
+  			stroke: #000;
+  			shape-rendering: crispEdges;
+		}
+
+    	.axis text {
+        	font-family: Arial;
+        	font-size: .7em;
+    	}
+
+
+		.dot {
+            opacity: .3;
+            z-index: 1;
+        }
+
+        .dot:hover {
+            opacity: 1;
+        }
+
         #map {
             width: 100%;
             height: 100%;
+            float: left;
             margin:0;
+        }
+
+        #split-bar {
+        	background-color:black;
+    		height:100%;
+    		float: left;
+    		width: 6px;
+        }
+
+        #container {
+        	width: 100%;
+        	height: 100%;
+        }
+
+        #main {
+        	float: left;
+        	width: 100%;
+        	height: 100%;
+        	background-color: #FFAA00;
+        }
+
+        .slider {
+        	background: #FFFFFF;
+        	border-left: 3px solid #737373;
+        	position: absolute;
+        	width: 750px;
+        	height: 100%;
+        	display: none;
+        	right: 0;
+        	z-index: 99;
         }
         
 		.SvgOverlay svg {
@@ -39,6 +93,7 @@
   			border-radius: 2px;
 			font-family: Arial, Helvetica, sans-serif;
 			font-size: 12px;
+			z-index: 100;
 		}
 		
 		.tip-item {
@@ -74,23 +129,31 @@
 		svg:hover {
 			fill: rgb(84, 84, 84);
 		}
-
 		
 		
 	</style>
     <link type="text/css" rel="stylesheet" href="colorbrewer.css" />
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
-    <script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=false">
-</script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=false"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 </head>
 <body>
-	<div id="map">
-
-
+	<button id="electricityUsekBtu" onclick="fetchPlaces(geoJson,'electricityUsekBtu',map)">Electricity Use</button>
+	<button id="siteEUIkBtuPerFt" onclick="fetchPlaces(geoJson,'siteEUIkBtuPerFt',map)">Site Energy Use Intensity</button>
+	<button id="naturalGasUsekBtu" onclick="fetchPlaces(geoJson,'naturalGasUsekBtu',map)">Natural Gas Use</button>
+	<button id="totalGHGEmissionsMtCO2e" onclick="fetchPlaces(geoJson,'totalGHGEmissionsMtCO2e',map)">Total Greenhouse Gas Emissions</button>
+	<a href="#" class="click">Triggers the sliding</a>
+	<div id="container">
+		<div id="main">
+			<div id="map">
+			</div>
+		</div>
+		<div class="slider">
+		</div>
 	</div>
 	<script type="text/javascript">
 
@@ -98,6 +161,9 @@
 			height = '100%';
 			fillColor = d3.rgb(215, 215, 250),
 			strokeColor = d3.rgb(175, 175, 200);
+
+		var map;
+		var geoJson;
 		
 		var projection = d3.geo.albers()
 						.scale(1)
@@ -114,6 +180,46 @@
 
 			makeMap(limits);
 		});
+
+		function fetchPlaces(buildings,property, map) {
+		  buildings = buildings.features;
+		  var heatmapData = [];
+		  var maxWeight = 0;
+
+		  for (building in buildings) {
+          	if (!isNaN(parseInt(buildings[building].properties[property])) /*&& parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)) < 5000*/) {
+          			var thisWeight = parseInt(Math.ceil(buildings[building].properties[property]));
+          			if (thisWeight > maxWeight) {
+          				maxWeight = thisWeight;
+          			}
+          		}
+          	};
+
+         for (building in buildings) {
+          	var lng = buildings[building].properties.pointCoords[0];
+          	var lat = buildings[building].properties.pointCoords[1];
+            var latLng = new google.maps.LatLng(lat,lng);
+            if (!isNaN(parseInt(buildings[building].properties[property])) /*&& parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)) < 5000*/) {
+            	var weight = parseInt(Math.ceil(buildings[building].properties[property]));
+            	if (weight == 0) {
+            		weight = 1;
+            	}
+            	var weightedLocation = {};
+            	weightedLocation.location = latLng;
+            	weightedLocation.weight = weight/(maxWeight);
+            	heatmapData.push(weightedLocation);
+            }
+          };
+
+		  var heatmap = new google.maps.visualization.HeatmapLayer({
+	     	data:heatmapData,
+	     	dissipating:true,
+	     	radius:100
+		  });
+		  heatmap.setMap(map);
+		  drawScatter(property)
+	    };//End of Fetch Places
+
 
 	        function makeMap(borders) {
 			
@@ -150,7 +256,7 @@
 				);
 
 				var $map=$("#map");
-				var map = new google.maps.Map($map[0], {
+				map = new google.maps.Map($map[0], {
 						zoom: 14,
 						minZoom : 13,
 						mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -158,52 +264,10 @@
 						styles:[{"stylers": [{"saturation": -75},{"lightness": 75}]}]					
 					});
 
-				var geoJson = borders;
+				geoJson = borders;
 				var overlay = new google.maps.OverlayView();
 
-				fetchPlaces(borders);
-				
-				function fetchPlaces(buildings) {
-				  buildings = buildings.features;
-				  var heatmapData = [];
-				  var maxWeight = 0;
-		          for (building in buildings) {
-		          	if (!isNaN(parseInt(buildings[building].properties.totalGHGEmissionsMtCO2e)) /*&& parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)) < 5000*/) {
-		          		var thisWeight = parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e));
-		          		if (thisWeight > maxWeight) {
-		          			maxWeight = thisWeight;
-		          		}
-		          	}
-		          }
-		          for (building in buildings) {
-		          	var lng = buildings[building].properties.pointCoords[0];
-		          	var lat = buildings[building].properties.pointCoords[1];
-
-		            var latLng = new google.maps.LatLng(lat,lng);
-		            if (!isNaN(parseInt(buildings[building].properties.totalGHGEmissionsMtCO2e)) /*&& parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)) < 5000*/) {
-		            	var weight = parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e));
-		            	if (weight == 0) {
-		            		weight = 1;
-		            	}
-		            	var weightedLocation = {};
-		            	weightedLocation.location = latLng;
-		            	weightedLocation.weight = weight/(maxWeight);
-		            	heatmapData.push(weightedLocation);
-
-		            	if (weight < 1) {
-		            		console.log("Building: "+buildings[building].properties.propertyName);
-		            		console.log(parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)));
-		            	}
-		            }
-		          }
-				  var heatmap = new google.maps.visualization.HeatmapLayer({
-			     	data:heatmapData,
-			     	dissipating:true,
-			     	radius:75
-				  });
-				  console.log("Max Weight is: "+maxWeight)
-				  heatmap.setMap(map);
-			    };//End of Fetch Places
+				fetchPlaces(borders,"totalGHGEmissionsMtCO2e", map);
 
 
 				overlay.onAdd = function () {
@@ -292,5 +356,187 @@
 				
 				// Add this building to the object that will be used to build the scatter plot
 			}
+
+			$('.click').click(function() {
+        		$('.slider').toggle("slide", {
+            		direction: "right",
+            		distance: 750
+        		}, 500);
+    		});
+
+    		function drawScatter(measure) {
+
+    			$(".slider").empty();
+
+    			var measureLabels = {
+					"electricityUsekBtu": "Electricity Use (kBtus)",
+					"siteEUIkBtuPerFt": "Site Energy Use Intensity (kBtu / Ft.)",
+					"naturalGasUsekBtu": "Natural Gas Use (kBtus)",
+					"totalGHGEmissionsMtCO2e": "Total GHG Emissions (MTCO2e)"
+				}
+
+    			var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function(d) {
+                    return "<div class=\"tip-item\"> \
+                                <strong>Property Name: </strong><span style='color:red'>" + d.properties.propertyName + "</span></strong> \
+                            </div> \
+                            <div class=\"tip-item\"> \
+                                <strong>Address: </strong><span style='color:red'>" + d.properties.address + "</span></strong> \
+                            </div> \
+                            <div class=\"tip-item\"> \
+                                <strong>Property Type: </strong><span style='color:red'>" + d.properties.propertyType + "</span></strong> \
+                            </div> \
+                            <div class=\"tip-item\"> \
+                                <strong>Natural Gas Use (kBtus): </strong><span style='color:red'>" + parseInt(d.properties.naturalGasUsekBtu).toLocaleString() + "</span></strong> \
+                            </div> \
+                            <div class=\"tip-item\"> \
+                                <strong>Energy Star Score (Mean: 50): </strong><span style='color:red'>" + d.properties.energyStarScore + "</span></strong> \
+                            </div>";
+                });
+
+
+				var margin = {top: 120, right: 60, bottom: 30, left: 100},
+		    		width = 750 - margin.left - margin.right,
+		    		height = 500 - margin.top - margin.bottom;
+
+		    	var xValue = function(d) { 
+		    					return Math.round(d["properties"]["floorAreaFtSq"]); 
+		    				},
+		    		xScale = d3.scale.linear().range([0, width]),
+		    		xMap = function(d) { 
+		    					return xScale(xValue(d)); 
+		    				},
+		    		xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+
+		        var sizeValue = function(d) {
+		                            return Math.round(d["properties"]["energyStarScore"]);
+		                        },
+		            sizeMap = function(d) {
+		                        return sizeScale(sizeValue(d));
+		            }
+
+		        var sizeScale = d3.scale.linear().range([1, 20]);
+
+		    	var yValue = function(d) { 
+		    					return Math.round(d["properties"][measure]);
+		    				},
+		    		yScale = d3.scale.linear().range([height, 0]),
+		    		yMap = function(d) { 
+		    					return yScale(yValue(d)); 
+		    				},
+		    		yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+		    	var svg = d3.select(".slider").append("svg")
+		    				.attr("width", width + margin.left + margin.right)
+		    				.attr("height", height + margin.top + margin.bottom)
+		    			.append("g")
+		    				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		        svg.call(tip); // Set the tooltip
+
+		    	d3.json("all_buildings_w_points_final.json", function(error, data) {
+
+		                var fillValue = function(d) {
+		                    return colors[d['properties']['propertyType']].toString();
+		                }
+
+		                data = preprocessData(data["features"]);
+
+		                var colors = generateColors(data, measure);
+
+		                console.log(colors);
+		    			//console.log(d3.min(data, xValue) - 1);
+		    			//console.log(d3.max(data, xValue) + 1);
+		    			
+		    			if (error) return console.error(error);
+		    			xScale.domain([d3.min(data, xValue) - 30, d3.max(data, xValue) + 30]);
+		    			yScale.domain([d3.min(data, yValue) - 30, d3.max(data, yValue) + 30]);
+		                sizeScale.domain([0, 100]);
+
+		    			svg.append("g")
+		    				.attr("class", "x axis")
+		    				.attr("transform", "translate(0," + height + ")")
+		    				.call(xAxis)
+		    			.append("text")
+		    				.attr("class", "label")
+		    				.attr("x", width)
+		    				.attr("y", -6)
+		    				.style("text-anchor", "end")
+		    				.text("Total Size (Sq Ft.)");
+
+		    			svg.append("g")
+		    				.attr("class", "y axis")
+		    				.call(yAxis)
+		    			.append("text")
+		    				.attr("class", "label")
+		    				.attr("transform", "rotate(-90)")
+		    				.attr("y", 6)
+		    				.attr("dy", ".71em")
+		    				.style("text-anchor", "end")
+		    				.text(measureLabels[measure])
+
+		    			svg.selectAll(".dot")
+		    				.data(data)
+		    			.enter().append("circle")
+		    				.attr("class", "dot")
+		    				.attr("r", sizeMap)
+		    				.attr("cx", xMap)
+		    				.attr("cy", yMap)
+		                    .attr("stroke", d3.hsl(360, .5, .8).toString())
+		    				.style("fill", fillValue)
+		                    .on("mouseover", onMouseOver)
+		                    .on("mouseout", onMouseOut)
+			   	});
+
+			    function preprocessData(data) {
+			        newdata = []
+			        for (i = 0; i < data.length; i++) {
+			           // console.log(data[i]);
+			            if (!isNaN(data[i].properties[measure]) && !isNaN(data[i].properties['floorAreaFtSq']) && !isNaN(data[i].properties['energyStarScore']) && !isNaN(data[i].properties['yearBuilt']) /*&& !isNaN(data[i].properties['electricityUsekBtu'])*/ && data[i].properties['energyStarScore'] <= 100) {
+			                    newdata.push(data[i]);
+			            }
+			           
+			        }
+			        console.log(newdata);
+			        return newdata;
+			    }
+
+			    function onMouseOver() {
+			                        
+			        // Show tooltip on mouseover
+			        tip.show(d3.event.target.__data__, d3.event.toElement);
+			        d3.select(this).attr("stroke", d3.hsl(1, .5, .8).toString());
+			        //console.log(d3.event);
+
+			    }
+			                    
+			    function onMouseOut() {
+
+			        // Hide tooltip on mouseout
+			        tip.hide(d3.event.target.__data__, d3.event.toElement);
+			        d3.select(this).attr("stroke", d3.hsl(360, .5, .8).toString());
+			    }
+
+			    function generateColors(data, measure) {
+			        propertyNameColors = {};
+			        hue = 0;
+			        color = d3.hsl(hue, .5, .5);
+			        console.log("Length of data is: " + data.length)
+			        for (i = 0; i < data.length; i++) {
+			        	if (!isNaN(data[i].properties[measure]) && !isNaN(data[i].properties['floorAreaFtSq']) && !isNaN(data[i].properties['energyStarScore']) && !isNaN(data[i].properties['yearBuilt']) /*&& !isNaN(data[i].properties['electricityUsekBtu'])*/ && data[i].properties['energyStarScore'] <= 100) {
+					            if (!propertyNameColors.hasOwnProperty(data[i]['properties']['propertyType'])) {
+					            	console.log("Hue is: "+hue)
+					                color = d3.hsl(hue, .5, .5);
+					                hue = hue + 10;
+					                propertyNameColors[data[i]['properties']['propertyType']] = color;
+					            }
+					    }
+			        }
+			        return propertyNameColors;
+			    }
+    		}
+
 	</script>
 </body>
