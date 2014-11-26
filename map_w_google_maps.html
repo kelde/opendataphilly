@@ -129,6 +129,12 @@
     						</div> \
     						<div class=\"tip-item\"> \
     							<strong>Site EUI (kBtu / ft&#178): </strong><span style='color:red'>" + d.properties.siteEUIkBtuPerFt + "</span></strong> \
+    						</div> \
+    						<div class=\"tip-item\"> \
+    							<strong>Total Greenhouse Gas Emissions (MTCO2e): </strong><span style='color:red'>" + d.properties.totalGHGEmissionsMtCO2e + "</span></strong> \
+    						</div> \
+    						<div class=\"tip-item\"> \
+    							<strong>Property Type: </strong><span style='color:red'>" + d.properties.propertyType + "</span></strong> \
     						</div>";
   				});
 				
@@ -162,8 +168,8 @@
 				  var heatmapData = [];
 				  var maxWeight = 0;
 		          for (building in buildings) {
-		          	if (!isNaN(parseInt(buildings[building].properties.siteEUIkBtuPerFt)) && parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt)) < 5000) {
-		          		var thisWeight = parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt));
+		          	if (!isNaN(parseInt(buildings[building].properties.totalGHGEmissionsMtCO2e)) /*&& parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)) < 5000*/) {
+		          		var thisWeight = parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e));
 		          		if (thisWeight > maxWeight) {
 		          			maxWeight = thisWeight;
 		          		}
@@ -174,8 +180,11 @@
 		          	var lat = buildings[building].properties.pointCoords[1];
 
 		            var latLng = new google.maps.LatLng(lat,lng);
-		            if (!isNaN(parseInt(buildings[building].properties.siteEUIkBtuPerFt)) && parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt)) < 5000) {
-		            	var weight = parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt));
+		            if (!isNaN(parseInt(buildings[building].properties.totalGHGEmissionsMtCO2e)) /*&& parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)) < 5000*/) {
+		            	var weight = parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e));
+		            	if (weight == 0) {
+		            		weight = 1;
+		            	}
 		            	var weightedLocation = {};
 		            	weightedLocation.location = latLng;
 		            	weightedLocation.weight = weight/(maxWeight);
@@ -183,7 +192,7 @@
 
 		            	if (weight < 1) {
 		            		console.log("Building: "+buildings[building].properties.propertyName);
-		            		console.log(parseInt(Math.ceil(buildings[building].properties.siteEUIkBtuPerFt)));
+		            		console.log(parseInt(Math.ceil(buildings[building].properties.totalGHGEmissionsMtCO2e)));
 		            	}
 		            }
 		          }
@@ -247,7 +256,7 @@
 					function onMouseOver() {
 						
 						// Show tooltip on mouseover
-						tip.show(d3.event.toElement.__data__, d3.event.toElement);
+						tip.show(d3.event.target.__data__, d3.event.toElement);
 						//console.log(d3.event);
 				
 					}
@@ -255,7 +264,7 @@
 					function onMouseOut() {
 
 						// Hide tooltip on mouseout
-						tip.hide(d3.event.toElement.__data__, d3.event.toElement);
+						tip.hide(d3.event.target.__data__, d3.event.toElement);
 					}
 
 				};  // End of overlay.onAdd
