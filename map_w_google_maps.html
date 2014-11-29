@@ -388,6 +388,7 @@
 		var map;
 		var heatmap;
 		var heatmapInitialized = 0;
+		var heatmapon = 1;
 		
 		var projection = d3.geo.albers()
 						.scale(1)
@@ -403,14 +404,16 @@
 			heatmap.setMap(heatmap.getMap() ? null : map);
 			if (heatmap.getMap()) {
 				$('#toggleHeatmap').addClass("shown");
+				heatmapon = 1;
 			} else {
 				$('#toggleHeatmap').removeClass("shown");
+				heatmapon = 0;
 			}
 		}
 
 
 		function fetchPlaces(buildings,property) {
-		  if (heatmapInitialized==1) {heatmap.setMap(null);}
+		  if (heatmapInitialized == 1) {heatmap.setMap(null); }
 		  buildings = buildings.features;
 		  var heatmapData = [];
 		  var maxWeight = 0;
@@ -449,7 +452,10 @@
 	     	dissipating:true,
 	     	radius:100
 		  });
-		  heatmap.setMap(map);
+
+		  if (heatmapon == 1) {
+		  	heatmap.setMap(map);
+		  }
 		  
 		  var title = document.getElementById("title");
 		  switch (property) {
