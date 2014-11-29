@@ -2,6 +2,56 @@
 <meta charset="utf-8">
 <head>
 	<style>
+
+		// CSS RESET 
+
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed, 
+		figure, figcaption, footer, header, hgroup, 
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+			-webkit-padding-start: 0px;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+		
+
 		body {
 			width:100%;
 			height:100%;
@@ -12,6 +62,153 @@
 			height:100%;
 			margin:0;
 			overflow:hidden;
+		}
+
+		#title {
+			font-family: Arial;
+			font-size: 16px;
+			padding: 2px 2px;
+		}
+
+		#buttons {
+			width: 210px;
+			background: #FFFFFF;
+			padding: 6px 6px;
+			border-radius: 8px;
+			border: 3px solid #c7c7c7;
+			-moz-box-shadow: inset 0px 0px 6px #272727;
+			-webkit-box-shadow: inset 0px 0px 6px #272727;
+			box-shadow: inset 0px 0px 6px #272727;
+		}
+
+		.heatmapbutton {
+			font-family: Arial;
+			padding: 6px 8px 6px 8px;
+			font-size: 12px;
+			border-radius: 8px;
+			border: 1px;
+			background-color: #dadbff;
+			text-align: center;
+			border: 1px #efefff solid;
+			background: -webkit-linear-gradient(#ebebeb 1%, #d6d6d6, #c4c4c4);
+			background: -o-linear-gradient(#ebebeb 1%, #d6d6d6, #c4c4c4);
+			background: -moz-linear-gradient(#ebebeb 1%, #d6d6d6, #c4c4c4);
+			background: linear-gradient(#ebebeb 1%, #d6d6d6, #c4c4c4);
+			-moz-box-shadow:  0px 0px 1px #272727;
+			-webkit-box-shadow:  0px 0px 1px #272727;
+			box-shadow: 0px 0px 1px #272727;
+			margin-top: 2px;
+			color: #404040;
+
+		}
+
+		.heatmapbutton:hover {
+			background: -webkit-linear-gradient(#ececec 1%, #bdbdbd, #9e9d9d);
+			background: -o-linear-gradient(#ececec 1%, #bdbdbd, #9e9d9d);
+			background: -moz-linear-gradient(#ececec 1%, #bdbdbd, #9e9d9d);
+			background: linear-gradient(#ececec 1%, #bdbdbd, #9e9d9d);
+			cursor: pointer;
+			color: #343434;
+		}
+
+		#scatterbutton {
+			font-family: Arial;
+			padding: 6px 8px 6px 8px;
+			font-size: 12px;
+			border-radius: 8px;
+			border: 1px;
+			background-color: #dadbff;
+			text-align: center;
+			border: 1px #eecd74 solid;
+			background: -webkit-linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			background: -o-linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			background: -moz-linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			background: linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			margin-top: 1px;
+			color: #404040;
+		}
+
+		#scatterbutton:hover {
+			background: -webkit-linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			background: -o-linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			background: -moz-linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			background: linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			cursor: pointer;
+			color: #515151;
+		}
+
+		#scatterbutton.shown {
+			border: 1px solid #e7e7e7;
+			background: -webkit-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: -o-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: -moz-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+		}
+
+		#scatterbutton.shown:hover {
+			border: 1px solid #e7e7e7;
+			background: -webkit-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: -o-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: -moz-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+		}
+
+		#toggleHeatmap {
+			font-family: Arial;
+			padding: 6px 8px 6px 8px;
+			font-size: 12px;
+			border-radius: 8px;
+			border: 1px;
+			background-color: #dadbff;
+			text-align: center;
+			border: 1px #eecd74 solid;
+			background: -webkit-linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			background: -o-linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			background: -moz-linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			background: linear-gradient(#fff6de 1%, #ffe9ac, #ffdc7e);
+			margin-top: 1px;
+			color: #404040;
+		}
+
+		#toggleHeatmap:hover {
+			background: -webkit-linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			background: -o-linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			background: -moz-linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			background: linear-gradient(#ffefc4 1%, #ffdf87, #ffcd48);
+			cursor: pointer;
+			color: #515151;
+		}
+
+		#toggleHeatmap.shown {
+			border: 1px solid #e7e7e7;
+			background: -webkit-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: -o-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: -moz-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+		}
+
+		#toggleHeatmap.shown:hover {
+			border: 1px solid #e7e7e7;
+			background: -webkit-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: -o-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: -moz-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+		}
+
+		.heatmapbutton.shown {
+			border: 1px solid #e7e7e7;
+			background: -webkit-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: -o-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: -moz-linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+			background: linear-gradient(#e1ffe3 1%, #7eee86, #61ed6b);
+		}
+
+		.heatmapbutton.shown:hover {
+			border: 1px solid #e7e7e7;
+			background: -webkit-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: -o-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: -moz-linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
+			background: linear-gradient(#e1ffe3 1%, #67ec70, #5cde66);
 		}
 
 		.axis path,
@@ -70,6 +267,9 @@
         	display: none;
         	right: 0;
         	z-index: 99;
+			-moz-box-shadow: inset 5px 0px 8px #c8c8c8;
+			-webkit-box-shadow: inset 5px 0px 8px #c8c8c8;
+			box-shadow: inset 5px 0px 8px #c8c8c8;
         }
         
 		.SvgOverlay svg {
@@ -143,13 +343,20 @@
 </head>
 <body>
 	<div id="buttonWrapper" style="position:absolute;z-index:10;bottom:25px;left:10px;">
-		<button id="electricityUsekBtu" onclick="fetchPlaces(geoJson,'electricityUsekBtu',map)">Electricity Use</button>
+			<h3 id="title">Current: Total Greenhouse Gas Emissions</h3>
+			<div id="buttons">
+				<div class="heatmapbutton" id="electricityUsekBtu">Electricity Use</div>
+				<div class="heatmapbutton" id="siteEUIkBtuPerFt">Site Energy Use Intensity</div>
+				<div class="heatmapbutton" id="naturalGasUsekBtu">Natural Gas Use</div>
+				<div class="heatmapbutton shown" id="totalGHGEmissionsMtCO2e">Total Greenhouse Gas Emissions</div>
+				<div id="scatterbutton" class="scatter">Scatter Plot</div>
+				<div id="toggleHeatmap" class="shown">Heatmap</div>
+			</div>
+		<!--<button id="electricityUsekBtu" onclick="fetchPlaces(geoJson,'electricityUsekBtu',map)">Electricity Use</button>
 		<button id="siteEUIkBtuPerFt" onclick="fetchPlaces(geoJson,'siteEUIkBtuPerFt',map)">Site Energy Use Intensity</button>
 		<button id="naturalGasUsekBtu" onclick="fetchPlaces(geoJson,'naturalGasUsekBtu',map)">Natural Gas Use</button>
 		<button id="totalGHGEmissionsMtCO2e" onclick="fetchPlaces(geoJson,'totalGHGEmissionsMtCO2e',map)">Total Greenhouse Gas Emissions</button>
-		<h3 id="title">Current: Total Greenhouse Gas Emissions</h3>
-		<button href="#" class="scatter">Triggers the sliding</button>
-		<button id="toggleHeatmap" onclick="toggleHeatmap()">Toggle Heatmap</button>
+		<button id="toggleHeatmap" onclick="toggleHeatmap()">Toggle Heatmap</button>-->
 	</div>
 	<div id="container">
 		<div id="main">
@@ -192,7 +399,13 @@
 		makeMap();
 		
 		function toggleHeatmap() {
+			console.log(heatmap.getMap());
 			heatmap.setMap(heatmap.getMap() ? null : map);
+			if (heatmap.getMap()) {
+				$('#toggleHeatmap').addClass("shown");
+			} else {
+				$('#toggleHeatmap').removeClass("shown");
+			}
 		}
 
 
@@ -516,7 +729,6 @@
 		    }
 
 		    function onMouseOver() {
-		                        
 		        // Show tooltip on mouseover
 		        tip.show(d3.event.target.__data__, d3.event.toElement);
 		        d3.select(this).attr("stroke", d3.hsl(1, .5, .8).toString());
@@ -525,7 +737,6 @@
 		    }
 			                    
 		    function onMouseOut() {
-
 		        // Hide tooltip on mouseout
 		        tip.hide(d3.event.target.__data__, d3.event.toElement);
 		        d3.select(this).attr("stroke", d3.hsl(360, .5, .8).toString());
@@ -535,11 +746,9 @@
 		        propertyNameColors = {};
 		        hue = 0;
 		        color = d3.hsl(hue, .5, .5);
-		        console.log("Length of data is: " + data.length)
 		        for (i = 0; i < data.length; i++) {
 		        	if (!isNaN(data[i].properties[measure]) && !isNaN(data[i].properties['floorAreaFtSq']) && !isNaN(data[i].properties['energyStarScore']) && !isNaN(data[i].properties['yearBuilt']) /*&& !isNaN(data[i].properties['electricityUsekBtu'])*/ && data[i].properties['energyStarScore'] <= 100) {
 				            if (!propertyNameColors.hasOwnProperty(data[i]['properties']['propertyType'])) {
-				            	console.log("Hue is: "+hue)
 				                color = d3.hsl(hue, .5, .5);
 				                hue = hue + 10;
 				                propertyNameColors[data[i]['properties']['propertyType']] = color;
@@ -550,11 +759,27 @@
 		    }
     	} // End of drawScatter()
 
-		$('.scatter').click(function() {
+		$('#scatterbutton').click(function() {
+			if ($(this).hasClass("shown")) {
+				$(this).removeClass("shown");
+			} else {
+				$(this).addClass("shown");
+			}
 			$('.slider').toggle("slide", {
     			direction: "right",
     			distance: 750
 			}, 500);
+		});
+
+		$('.heatmapbutton').click(function() {
+			measure = $(this).attr("id");
+			$("#buttons").children(".heatmapbutton.shown").removeClass("shown");
+			$(this).addClass("shown");
+			fetchPlaces(geoJson, measure, map);
+		});
+
+		$('#toggleHeatmap').click(function() {
+			toggleHeatmap();
 		});
 
 	</script>
