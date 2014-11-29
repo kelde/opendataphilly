@@ -484,20 +484,29 @@
 					.offset([-10, 0])
 					.html(function(d) {
 						return "<div class=\"tip-item\"> \
-									<strong>Property Name: </strong><span style='color:red'>" + d.properties.propertyName + "</span></strong> \
-								</div> \
-								<div class=\"tip-item\"> \
-									<strong>Address: </strong><span style='color:red'>" + d.properties.address + "</span></strong> \
-								</div> \
-								<div class=\"tip-item\"> \
-									<strong>Site EUI (kBtu / ft&#178): </strong><span style='color:red'>" + d.properties.siteEUIkBtuPerFt + "</span></strong> \
-								</div> \
-								<div class=\"tip-item\"> \
-									<strong>Total Greenhouse Gas Emissions (MTCO2e): </strong><span style='color:red'>" + d.properties.totalGHGEmissionsMtCO2e + "</span></strong> \
-								</div> \
-								<div class=\"tip-item\"> \
-									<strong>Property Type: </strong><span style='color:red'>" + d.properties.propertyType + "</span></strong> \
-								</div>";
+                            <strong>Property Name: </strong><span style='color:red'>" + d.properties.propertyName + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Address: </strong><span style='color:red'>" + d.properties.address + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Property Type: </strong><span style='color:red'>" + d.properties.propertyType + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Site EUI (kBtu / Sq. ft.): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.siteEUIkBtuPerFt)) ? "Not Available" : parseInt(d.properties.siteEUIkBtuPerFt).toLocaleString()) + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Electricity Use (kBtus): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.electricityUsekBtu)) ? "Not Available" : parseInt(d.properties.electricityUsekBtu).toLocaleString()) + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Natural Gas Use (kBtus): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.naturalGasUsekBtu)) ? "Not Available" : parseInt(d.properties.naturalGasUsekBtu).toLocaleString()) + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>GHG Emissions (MTCO2e): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.totalGHGEmissionsMtCO2e)) ? "Not Available" : parseInt(d.properties.totalGHGEmissionsMtCO2e).toLocaleString()) + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Energy Star Score (Mean: 50): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.totalGHGEmissionsMtCO2e)) ? "Not Available" : d.properties.energyStarScore) + "</span></strong> \
+                        </div>";
 					});
 			
 			// Quantize for color brewer
@@ -628,13 +637,24 @@
                             <strong>Property Type: </strong><span style='color:red'>" + d.properties.propertyType + "</span></strong> \
                         </div> \
                         <div class=\"tip-item\"> \
-                            <strong>Natural Gas Use (kBtus): </strong><span style='color:red'>" + parseInt(d.properties.naturalGasUsekBtu).toLocaleString() + "</span></strong> \
+                            <strong>Site EUI (kBtu / Sq. ft.): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.siteEUIkBtuPerFt)) ? "Not Available" : parseInt(d.properties.siteEUIkBtuPerFt).toLocaleString()) + "</span></strong> \
                         </div> \
                         <div class=\"tip-item\"> \
-                            <strong>Energy Star Score (Mean: 50): </strong><span style='color:red'>" + d.properties.energyStarScore + "</span></strong> \
+                            <strong>Electricity Use (kBtus): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.electricityUsekBtu)) ? "Not Available" : parseInt(d.properties.electricityUsekBtu).toLocaleString()) + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Natural Gas Use (kBtus): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.naturalGasUsekBtu)) ? "Not Available" : parseInt(d.properties.naturalGasUsekBtu).toLocaleString()) + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>GHG Emissions (MTCO2e): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.totalGHGEmissionsMtCO2e)) ? "Not Available" : parseInt(d.properties.totalGHGEmissionsMtCO2e).toLocaleString()) + "</span></strong> \
+                        </div> \
+                        <div class=\"tip-item\"> \
+                            <strong>Energy Star Score (Mean: 50): </strong><span style='color:red'>" + (isNaN(parseInt(d.properties.totalGHGEmissionsMtCO2e)) ? "Not Available" : d.properties.energyStarScore) + "</span></strong> \
                         </div>";
             });
 
+
+totalGHGEmissionsMtCO2e
 
 			var margin = {top: 120, right: 60, bottom: 30, left: 100},
 	    		width = 750 - margin.left - margin.right,
