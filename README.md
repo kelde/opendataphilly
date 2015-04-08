@@ -43,10 +43,12 @@ What technology and tools does the project make use of?
 
 To show our appreciation for those developing open source tools and technology, we’ve included brief descriptions and links to some of the tools we used below:
 
-|GDAL: A translator library for working with vector and raster geospatial data formats, which we used for its ogr2ogr command-line utility|
-|Geojson-Merge: A Node.js package / utility developed by Mapbox, which provides a command-line interface for merging multiple GeoJSON files together|
-|GeoJSON-JS-Utils: A Javascript module that provides some useful functions for manipulating and working with GeoJSON, which we used primarily for its “point in polygon” implementation|
-|D3.js: A powerful data visualization library for generating data visualizations using Javascript, which we used to produce the scatterplot, render the polygons on the Google Maps overlay, and color the polygons by EUI|
-|D3-tip: A great tooltip implementation for D3.js written by Justin Palmer (if you haven’t seen his amazing data visualizations of Portland, Oregon, then check them out!)|
-|JQuery: The Javascript library that we all know and love…|
-|ColorBrewer: A color scheme by Cynthia Brewer that can be used to color shapes by their values (our project used the CSS implementation)|
+| Open source tools used |
+| --------------------- |
+| GDAL: A translator library for working with vector and raster geospatial data formats, which we used for its ogr2ogr command-line utility |
+| Geojson-Merge: A Node.js package / utility developed by Mapbox, which provides a command-line interface for merging multiple GeoJSON files together |
+| GeoJSON-JS-Utils: A Javascript module that provides some useful functions for manipulating and working with GeoJSON, which we used primarily for its “point in polygon” implementation |
+| D3.js: A powerful data visualization library for generating data visualizations using Javascript, which we used to produce the scatterplot, render the polygons on the Google Maps overlay, and color the polygons by EUI |
+| D3-tip: A great tooltip implementation for D3.js written by Justin Palmer (if you haven’t seen his amazing data visualizations of Portland, Oregon, then check them out!) |
+| JQuery: The Javascript library that we all know and love… |
+| ColorBrewer: A color scheme by Cynthia Brewer that can be used to color shapes by their values (our project used the CSS implementation) |
