@@ -2,7 +2,7 @@ opendataphilly
 ==============
 
 About the Open Data Philly Visualization Contest
-================================================
+------------------------------------------------
 
 OpenDataPhilly is a portal that provides access to free datasets related to the Philadelphia region. It contains datasets on Philadelphia’s education system, police department, maps of the Philadelphia region, property values, and more.
 
